@@ -1,6 +1,7 @@
 'use strict';
 
 var newGameBtn = document.getElementById('newGame');
+var startGameBtn = document.getElementById('startGame');
 
 var resultGame = document.getElementById('output'); // do wyświetlania wyniku gry
 var compM = document.getElementById('output2'); // roboczo do wyświetlania wylosowanego ruchu kompa 
@@ -10,6 +11,7 @@ var entireResultInfo = document.getElementById('entireResult'); // do wyświetle
 var statisticsInfo = document.getElementById('statistics'); // do wstawiania statystyk z tablicy obiektów progress
 
 var params = {
+    playerName: '',         //imię gracza
     playerWins: 0,          // wygrane gracza
     computerWins: 0,        // wygrane kompa
     amountWinRounds: 0,     //ilość wygranych rund
@@ -92,7 +94,7 @@ function endGame() {
     resetButtons();
     if (params.playerWins == params.amountWinRounds) {
 
-        entireResultInfo.innerHTML = 'YOU WON THE ENTIRE GAME!!!' + '<br><br>';
+        entireResultInfo.innerHTML = params.playerName + ' WON THE ENTIRE GAME!!!' + '<br><br>';
     } else
         entireResultInfo.innerHTML = 'COMPUTER WON THE ENTIRE GAME!!!' + '<br><br>';
 
@@ -106,7 +108,9 @@ function endGame() {
     }
 
     document.querySelector('#modal-overlay').classList.add('show');
-    document.querySelector('.modal').classList.add('show');
+    document.getElementById("startModal").classList.remove('show');
+    document.getElementById("finishModal").classList.add('show');
+    
 };
 
 // algorytm gry
@@ -132,13 +136,13 @@ function playerMove(move) {
         var resultRound = 'DRAW!!!'; 
     } else if (playerMove == 1 && computerMove == 2) {
         params.playerWins++;
-        resultRound = 'YOU WON: you played PAPER, computer played ROCK';   
+        resultRound = params.playerName + ' WON: ' + params.playerName + ' played PAPER, computer played ROCK';   
     } else if (playerMove == 2 && computerMove == 3) {
         params.playerWins++;
-        resultRound = 'YOU WON: you played ROCK, computer played SCISSORS';      
+        resultRound = params.playerName + ' WON: ' + params.playerName + ' played ROCK, computer played SCISSORS';      
     } else if (playerMove == 3 && computerMove == 1) {
         params.playerWins++;
-        resultRound = 'YOU WON: you played SCISSORS, computer played PAPER';
+        resultRound = params.playerName + ' WON: ' + params.playerName + ' played SCISSORS, computer played PAPER';
     } else {
         params.computerWins++;
         resultRound = 'COMPUTER WON';
@@ -174,16 +178,29 @@ for (var i = 0; i < buttons.length; i++) {
 newGameBtn.addEventListener('click', newGame);
 
 function newGame() {
+    document.querySelector('#modal-overlay').classList.add('show');
+    document.getElementById("finishModal").classList.remove('show');
+    document.getElementById("startModal").classList.add('show');
+    startGameBtn.addEventListener('click', startGame);
+}
 
-    params.amountWinRounds = window.prompt('How many wins end game?');
+function startGame(event) {
+    event.preventDefault();
+    document.querySelector('#modal-overlay').classList.remove('show');
+    document.querySelector('.new-game').classList.remove('show');  
     params.play = true;
     params.playerWins = 0;
     params.computerWins = 0;
     params.roundNumber = 0;
+    params.progress = [];
+    params.playerName = document.getElementById('playerName').value;
+    params.amountWinRounds = document.getElementById('amountWinToEnd').value;
+    console.log(params);
     resetButtons();
     amountWinsInfo.innerHTML = params.amountWinRounds + '<br><br>';
     winsInfo.innerHTML = '';
     entireResultInfo.innerHTML = '';
+    statisticsInfo.innerHTML = '';
     // wyłapanie decyzji gracza
     console.log("new game");
     for (var i = 0; i < buttons.length; i++) {

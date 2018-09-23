@@ -3,19 +3,14 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Paper, Rock, Scissors GAME - 3etap</title>
-  
-  
-  
-      <link rel="stylesheet" href="css/style.css">
-
-  
+  <title>Paper, Rock, Scissors GAME - 3etap</title> 
+  <link rel="stylesheet" href="css/style.css">  
 </head>
 
 <body>
-  <div class="continer">
+  <div class="container">
     <h1>Paper, Rock, Scissors <strong>GAME</strong></h1>
-    <button id="newGame">New Game :)</button><br>
+    <button class="show-modal" id="newGame">New Game :)</button><br>
     <div id="amountWins"></div><br>
     <button class="player-move" id="paper" data-move="paper">Paper</button>
     <button class="player-move" id="rock" data-move="rock">Rock</button>
@@ -24,7 +19,7 @@
     <div id="output"></div>
     <div id="result"></div>
     <div class="overlay" id="modal-overlay">
-      <div class="modal">
+      <div class="modal" id="finishModal">
         <a href="#" class="close">x</a>
         <header>Congratulations!!!</header>
         <div class="content">
@@ -38,21 +33,29 @@
               <th>Game statistics</th>
             </thead>
             <tbody id="statistics">
-
             </tbody>
           </table>
         </div>
       </div>
+      <div class="modal new-game" id="startModal">
+          <a href="#" class="close">x</a>
+          <header>New Game</header>
+          <div class="content">
+            <form>
+              <label for="name">Name</label>
+              <input type="text" name="name" id="playerName"><br>
+              <label for="amountWinToEnd" >How many wins end game?</label>
+              <input type="number" name="amountWinToEnd" id="amountWinToEnd"><br>
+              <button id="startGame">Start</button>
+            </form>         
+          </div>
+        </div>
     </div>
+
     <!-- <div id="entireResult"></div> -->
   </div>
   
-  
-
   <script  src="js/index.js"></script>
-
-
-
 
 </body>
 </html>
