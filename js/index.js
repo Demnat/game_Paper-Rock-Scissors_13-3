@@ -7,12 +7,15 @@ var compM = document.getElementById('output2'); // roboczo do wyświetlania wylo
 var winsInfo = document.getElementById('result'); // do wyświetlania statystyk gry
 var amountWinsInfo = document.getElementById('amountWins'); // do wyświetlania liczby wygrnych rund kończących grę
 var entireResultInfo = document.getElementById('entireResult'); // do wyświetlenia wyniku gry
+var statisticsInfo = document.getElementById('statistics'); // do wstawiania statystyk z tablicy obiektów progress
 
 var params = {
     playerWins: 0,          // wygrane gracza
     computerWins: 0,        // wygrane kompa
     amountWinRounds: 0,     //ilość wygranych rund
+    roundNumber: 0,         //aktualny numer rundy gry
     play: false,            // stan gry
+    progress: [],           //info z przebiegu gry
 }
 
 // var playerWins = 0; 
@@ -29,8 +32,7 @@ var playerBtnClick = function (event) {
     console.log(event.target);
     var playerChoice = event.target.getAttribute('data-move'); //odnosi się do klikniętego obiektu czyli naszego buttona
     playerMove(playerChoice);
-    winsInfo.innerHTML = params.playerWins + ' - ' + params.computerWins + '<br><br>';
-
+    
 }
 
 
@@ -98,6 +100,11 @@ function endGame() {
         buttons[i].addEventListener('click', infoStartNewGame);
     }
 
+    console.log(params.progress);
+    for (var i = 0; i < params.progress.length; i++) {
+        statisticsInfo.innerHTML += '<tr><td>' + params.progress[i].round + '</td><td>' + params.progress[i].playerMove + '</td><td>' + params.progress[i].computerMove + '</td><td>' + params.progress[i].resultRound + '</td><td>' + params.progress[i].winsStatistics + '</td></tr>';
+    }
+
     document.querySelector('#modal-overlay').classList.add('show');
     document.querySelector('.modal').classList.add('show');
 };
@@ -105,6 +112,7 @@ function endGame() {
 // algorytm gry
 function playerMove(move) {
 
+    params.roundNumber++;
     var computerMove = randomMove();
     compM.innerHTML = 'Computer move ' + computerMove + '<br><br>';
     var playerMove;
@@ -121,20 +129,36 @@ function playerMove(move) {
     }
 
     if (playerMove == computerMove) {
-        resultGameInfo('DRAW!!!');
+        var resultRound = 'DRAW!!!'; 
     } else if (playerMove == 1 && computerMove == 2) {
         params.playerWins++;
-        resultGameInfo('YOU WON: you played PAPER, computer played ROCK');
+        resultRound = 'YOU WON: you played PAPER, computer played ROCK';   
     } else if (playerMove == 2 && computerMove == 3) {
         params.playerWins++;
-        resultGameInfo('YOU WON: you played ROCK, computer played SCISSORS');
+        resultRound = 'YOU WON: you played ROCK, computer played SCISSORS';      
     } else if (playerMove == 3 && computerMove == 1) {
         params.playerWins++;
-        resultGameInfo('YOU WON: you played SCISSORS, computer played PAPER');
+        resultRound = 'YOU WON: you played SCISSORS, computer played PAPER';
     } else {
         params.computerWins++;
-        resultGameInfo('COMPUTER WON');
+        resultRound = 'COMPUTER WON';
     }
+
+    var winsStat = params.playerWins + ' - ' + params.computerWins;
+    winsInfo.innerHTML = winsStat + '<br><br>';
+
+    resultGameInfo(resultRound);
+    
+    var roundData = {
+        round:  params.roundNumber,
+        playerMove: playerMove,
+        computerMove: computerMove,
+        resultRound: resultRound,
+        winsStatistics: winsStat,
+    }
+
+    params.progress.push(roundData);  //dodawanie elementu do tablicy
+    // console.log(params.progress);
 
     if (params.playerWins == params.amountWinRounds || params.computerWins == params.amountWinRounds) {
         endGame();
@@ -155,6 +179,7 @@ function newGame() {
     params.play = true;
     params.playerWins = 0;
     params.computerWins = 0;
+    params.roundNumber = 0;
     resetButtons();
     amountWinsInfo.innerHTML = params.amountWinRounds + '<br><br>';
     winsInfo.innerHTML = '';
