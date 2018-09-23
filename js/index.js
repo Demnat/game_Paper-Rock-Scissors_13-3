@@ -1,9 +1,6 @@
 'use strict';
 
 var newGameBtn = document.getElementById('newGame');
-var paperBtn = document.getElementById('paper');
-var rockBtn = document.getElementById('rock');
-var scissorsBtn = document.getElementById('scissors');
 
 var resultGame = document.getElementById('output'); // do wyświetlania wyniku gry
 var compM = document.getElementById('output2'); // roboczo do wyświetlania wylosowanego ruchu kompa 
@@ -17,9 +14,22 @@ var computerWins = 0; // wygrane kompa
 var amountWinRounds = 0;
 var play = false; // stan gry
 
+var buttons = document.querySelectorAll('.player-move'); //tablica elementów z klasą player-move
+
+//do obslugi pętli z wywołaniem decyzji gracza
+var playerBtnClick = function (event) {
+    
+    console.log(event.target);
+    var playerChoice = event.target.getAttribute('data-move'); //odnosi się do klikniętego obiektu czyli naszego buttona
+    playerMove(playerChoice);
+    winsInfo.innerHTML = playerWins + ' - ' + computerWins + '<br><br>';
+
+}
+
+
 // losowanie ruchu kompa
 function randomMove() {
-    var moveC = Math.ceil(Math.random()*(3-1)+1);
+    var moveC = Math.ceil(Math.random() * (3 - 1) + 1);
     return moveC;
 };
 
@@ -28,62 +38,57 @@ function resultGameInfo(text) {
     resultGame.innerHTML = text + '<br><br>';
 };
 
+//info - gdy gracz chce kliknąć w buttony poza grą
+function infoStartNewGame() {
+   
+    winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
+    resultGameInfo('');
+    compM.innerHTML = '';
+
+} 
+
 // wyłączenie nasłuchiwania EventListener na przyciskach (musi być zdefiniowana funkcja)
 function resetButtons() {
-  
-    paperBtn.removeEventListener('click', playerMovePaperClick);
-    rockBtn.removeEventListener('click', playerMoveRockClick);
-    scissorsBtn.removeEventListener('click', playerMoveScisorsClick);
-  
+
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].removeEventListener('click', playerBtnClick);
+        buttons[i].removeEventListener('click', infoStartNewGame);        
+    }
 };
 
 function endGame() {
-    
+
     play = false;
     resetButtons();
     if (playerWins == amountWinRounds) {
         entireResultInfo.innerHTML = 'YOU WON THE ENTIRE GAME!!!' + '<br><br>';
     } else
         entireResultInfo.innerHTML = 'COMPUTER WON THE ENTIRE GAME!!!' + '<br><br>';
-    
-    paperBtn.addEventListener('click',function() {
-        winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
-        resultGameInfo('');
-        compM.innerHTML = '';
-    });
 
-    rockBtn.addEventListener('click', function() {
-        winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
-        resultGameInfo('');
-        compM.innerHTML = '';
-    });
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', infoStartNewGame);
+    }
 
-    scissorsBtn.addEventListener('click', function() {
-        winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
-        resultGameInfo('');
-        compM.innerHTML = '';
-    });
-  
 };
 
 // algorytm gry
 function playerMove(move) {
-  
+
     var computerMove = randomMove();
     compM.innerHTML = 'Computer move ' + computerMove + '<br><br>';
     var playerMove;
     switch (move) {
         case 'paper':
-        playerMove = 1;
-        break;
+            playerMove = 1;
+            break;
         case 'rock':
-        playerMove = 2;
-        break;
+            playerMove = 2;
+            break;
         case 'scissors':
-        playerMove = 3;
-        break;
+            playerMove = 3;
+            break;
     }
-  
+
     if (playerMove == computerMove) {
         resultGameInfo('DRAW!!!');
     } else if (playerMove == 1 && computerMove == 2) {
@@ -99,45 +104,22 @@ function playerMove(move) {
         computerWins++;
         resultGameInfo('COMPUTER WON');
     }
-  
+
     if (playerWins == amountWinRounds || computerWins == amountWinRounds) {
         endGame();
     }
 };
 
-// wyłapanie decyzji gracza
-paperBtn.addEventListener('click',function() {
-    winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
-});
+// wyłapanie decyzji gracza przed rozpoczęciem gry
+for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', infoStartNewGame);
+}
 
-rockBtn.addEventListener('click', function() {
-    winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
-});
-
-scissorsBtn.addEventListener('click', function() {
-    winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
-});
-
-
-
-// newGameBtn.addEventListener('click', function() {
-//     amountWinRounds = window.prompt('How many wins end game?');
-//     play = true;
-//     playerWins = 0;
-//     computerWins = 0;
-//     resetButtons();
-//     amountWinsInfo.innerHTML = amountWinRounds + '<br><br>';
-//     winsInfo.innerHTML = '';
-//     entireResultInfo.innerHTML = '';  
-//     // wyłapanie decyzji gracza
-//     paperBtn.addEventListener('click', playerMovePaperClick);
-//     rockBtn.addEventListener('click', playerMoveRockClick);
-//     scissorsBtn.addEventListener('click', playerMoveScisorsClick);     
-// });
-
+//gracz rozpoczyna grę
 newGameBtn.addEventListener('click', newGame);
 
 function newGame() {
+    
     amountWinRounds = window.prompt('How many wins end game?');
     play = true;
     playerWins = 0;
@@ -145,24 +127,11 @@ function newGame() {
     resetButtons();
     amountWinsInfo.innerHTML = amountWinRounds + '<br><br>';
     winsInfo.innerHTML = '';
-    entireResultInfo.innerHTML = '';  
+    entireResultInfo.innerHTML = '';
     // wyłapanie decyzji gracza
-    paperBtn.addEventListener('click', playerMovePaperClick);
-    rockBtn.addEventListener('click', playerMoveRockClick);
-    scissorsBtn.addEventListener('click', playerMoveScisorsClick);    
-}
+    console.log("new game");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', playerBtnClick);
+    }
 
-function playerMovePaperClick() {
-    playerMove('paper');
-    winsInfo.innerHTML = playerWins + ' - ' + computerWins + '<br><br>';
-}
-
-function playerMoveRockClick() {
-    playerMove('rock');
-    winsInfo.innerHTML = playerWins + ' - ' + computerWins + '<br><br>';
-}
-
-function playerMoveScisorsClick() {
-    playerMove('scissors');
-    winsInfo.innerHTML = playerWins + ' - ' + computerWins + '<br><br>';
 }
