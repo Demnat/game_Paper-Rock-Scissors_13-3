@@ -21,11 +21,11 @@ var params = {
 // var play = false; // stan gry
 
 //tablica elementów z klasą player-move
-var buttons = document.querySelectorAll('.player-move'); 
+var buttons = document.querySelectorAll('.player-move');
 
 //do obslugi pętli z wywołaniem decyzji gracza
 var playerBtnClick = function (event) {
-    
+
     console.log(event.target);
     var playerChoice = event.target.getAttribute('data-move'); //odnosi się do klikniętego obiektu czyli naszego buttona
     playerMove(playerChoice);
@@ -47,27 +47,49 @@ function resultGameInfo(text) {
 
 //info - gdy gracz chce kliknąć w buttony poza grą
 function infoStartNewGame() {
-   
+
     winsInfo.innerHTML = 'Game over, please press the new game button!' + '<br><br>';
     resultGameInfo('');
     compM.innerHTML = '';
 
-} 
+}
 
 // wyłączenie nasłuchiwania EventListener na przyciskach (musi być zdefiniowana funkcja)
 function resetButtons() {
 
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].removeEventListener('click', playerBtnClick);
-        buttons[i].removeEventListener('click', infoStartNewGame);        
+        buttons[i].removeEventListener('click', infoStartNewGame);
     }
 };
+
+// zamknięcie modala
+var hideModal = function (event) {
+    event.preventDefault();
+    document.querySelector('#modal-overlay').classList.remove('show');
+};
+
+// obsługa zamknięcia modali
+var closeModal = document.querySelectorAll('.modal .close');
+for (var i = 0; i < closeModal.length; i++) {
+    closeModal[i].addEventListener('click', hideModal);
+}
+document.querySelector('#modal-overlay').addEventListener('click', hideModal);
+
+//zablokowanie propagacji kliknięć w ciało modala
+var modals = document.querySelectorAll('.modal');
+for (var i = 0; i < modals.length; i++) {
+    modals[i].addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+}
 
 function endGame() {
 
     params.play = false;
     resetButtons();
     if (params.playerWins == params.amountWinRounds) {
+
         entireResultInfo.innerHTML = 'YOU WON THE ENTIRE GAME!!!' + '<br><br>';
     } else
         entireResultInfo.innerHTML = 'COMPUTER WON THE ENTIRE GAME!!!' + '<br><br>';
@@ -76,6 +98,8 @@ function endGame() {
         buttons[i].addEventListener('click', infoStartNewGame);
     }
 
+    document.querySelector('#modal-overlay').classList.add('show');
+    document.querySelector('.modal').classList.add('show');
 };
 
 // algorytm gry
@@ -126,7 +150,7 @@ for (var i = 0; i < buttons.length; i++) {
 newGameBtn.addEventListener('click', newGame);
 
 function newGame() {
-    
+
     params.amountWinRounds = window.prompt('How many wins end game?');
     params.play = true;
     params.playerWins = 0;
