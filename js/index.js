@@ -20,23 +20,16 @@ var params = {
     progress: [],           //info z przebiegu gry
 }
 
-// var playerWins = 0; 
-// var computerWins = 0; 
-// var amountWinRounds = 0; 
-// var play = false; // stan gry
-
 //tablica elementów z klasą player-move
 var buttons = document.querySelectorAll('.player-move');
 
 //do obslugi pętli z wywołaniem decyzji gracza
 var playerBtnClick = function (event) {
 
-    console.log(event.target);
     var playerChoice = event.target.getAttribute('data-move'); //odnosi się do klikniętego obiektu czyli naszego buttona
     playerMove(playerChoice);
     
 }
-
 
 // losowanie ruchu kompa
 function randomMove() {
@@ -94,7 +87,7 @@ function endGame() {
     resetButtons();
     if (params.playerWins == params.amountWinRounds) {
 
-        entireResultInfo.innerHTML = params.playerName + ' WON THE ENTIRE GAME!!!' + '<br><br>';
+        entireResultInfo.innerHTML ='<strong>' + params.playerName + '</strong> WON THE ENTIRE GAME!!!' + '<br><br>';
     } else
         entireResultInfo.innerHTML = 'COMPUTER WON THE ENTIRE GAME!!!' + '<br><br>';
 
@@ -104,7 +97,9 @@ function endGame() {
 
     console.log(params.progress);
     for (var i = 0; i < params.progress.length; i++) {
-        statisticsInfo.innerHTML += '<tr><td>' + params.progress[i].round + '</td><td>' + params.progress[i].playerMove + '</td><td>' + params.progress[i].computerMove + '</td><td>' + params.progress[i].resultRound + '</td><td>' + params.progress[i].winsStatistics + '</td></tr>';
+        statisticsInfo.innerHTML += '<tr><td>' + params.progress[i].round + '</td><td>' + 
+        params.progress[i].playerMove + '</td><td>' + params.progress[i].computerMove + '</td><td>' + 
+        params.progress[i].resultRound + '</td><td>' + params.progress[i].winsStatistics + '</td></tr>';
     }
 
     document.querySelector('#modal-overlay').classList.add('show');
@@ -136,13 +131,13 @@ function playerMove(move) {
         var resultRound = 'DRAW!!!'; 
     } else if (playerMove == 1 && computerMove == 2) {
         params.playerWins++;
-        resultRound = params.playerName + ' WON: ' + params.playerName + ' played PAPER, computer played ROCK';   
+        resultRound = '<strong>' + params.playerName + '</strong> WON: ' + params.playerName + ' played PAPER, computer played ROCK';   
     } else if (playerMove == 2 && computerMove == 3) {
         params.playerWins++;
-        resultRound = params.playerName + ' WON: ' + params.playerName + ' played ROCK, computer played SCISSORS';      
+        resultRound = '<strong>' + params.playerName + '</strong> WON: ' + params.playerName + ' played ROCK, computer played SCISSORS';      
     } else if (playerMove == 3 && computerMove == 1) {
         params.playerWins++;
-        resultRound = params.playerName + ' WON: ' + params.playerName + ' played SCISSORS, computer played PAPER';
+        resultRound = '<strong>' + params.playerName + '</strong> WON: ' + params.playerName + ' played SCISSORS, computer played PAPER';
     } else {
         params.computerWins++;
         resultRound = 'COMPUTER WON';

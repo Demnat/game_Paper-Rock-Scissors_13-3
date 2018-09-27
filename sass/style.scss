@@ -1,6 +1,10 @@
 body {
 	padding: 10px;
-	text-align: center;
+  text-align: center;
+  
+  strong {
+    text-transform: uppercase;
+  }
 }
 
 button {
@@ -44,6 +48,7 @@ button {
     }
     
     .modal {
+      padding: 10px;
       display: none;
       background: #fff;
       width: auto;
@@ -76,6 +81,50 @@ button {
       .content {
         min-height: 30px;
         padding: 5px 30px;
+        
+        table {
+          border: 2px solid #02ac46;
+          thead {
+            color: #fff;
+            background-color: #02ac46;
+            th {
+              padding: 5px;
+            }
+          }
+          tbody {
+            tr {
+              &:nth-child(even){
+                background-color: #b8e994;               
+              }
+
+              &:hover {
+                background-color: #78e08f;
+              }
+
+              td:nth-child(4) {
+                text-align: left;
+              }
+            }
+          }
+        }
+
+        .groupContainer {
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+          
+          label {
+            padding: 0 15px;
+          }
+
+          input {
+            border-color: #02ac46;
+          }
+        }
+        
+        button {
+          margin: 15px 0 0 0;
+        }
       }
 
     

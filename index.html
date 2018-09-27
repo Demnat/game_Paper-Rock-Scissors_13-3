@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>Paper, Rock, Scissors GAME - 3etap</title> 
-  <link rel="stylesheet" href="css/style.css">  
+  <title>Paper, Rock, Scissors GAME - 3etap</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
   <div class="container">
-    <h1>Paper, Rock, Scissors <strong>GAME</strong></h1>
-    <button class="show-modal" id="newGame">New Game :)</button><br>
-    <div id="amountWins"></div><br>
+    <h1>Paper, Rock, Scissors
+      <strong>GAME</strong>
+    </h1>
+    <button class="show-modal" id="newGame">New Game :)</button>
+    <br>
+    <div id="amountWins"></div>
+    <br>
     <button class="player-move" id="paper" data-move="paper">Paper</button>
     <button class="player-move" id="rock" data-move="rock">Rock</button>
     <button class="player-move" id="scissors" data-move="scissors">Scissors</button>
@@ -38,24 +42,27 @@
         </div>
       </div>
       <div class="modal new-game" id="startModal">
-          <a href="#" class="close">x</a>
-          <header>New Game</header>
-          <div class="content">
-            <form>
+        <a href="#" class="close">x</a>
+        <header>New Game</header>
+        <div class="content">
+          <form>
+            <div class="groupContainer">
               <label for="name">Name</label>
-              <input type="text" name="name" id="playerName"><br>
-              <label for="amountWinToEnd" >How many wins end game?</label>
-              <input type="number" name="amountWinToEnd" id="amountWinToEnd"><br>
-              <button id="startGame">Start</button>
-            </form>         
-          </div>
+              <input type="text" name="name" id="playerName">
+            </div>
+            <div class="groupContainer">
+              <label for="amountWinToEnd">How many wins end game?</label>
+              <input type="number" name="amountWinToEnd" id="amountWinToEnd">
+            </div>
+            <button id="startGame">Start</button>
+          </form>
         </div>
+      </div>
     </div>
-
-    <!-- <div id="entireResult"></div> -->
   </div>
-  
-  <script  src="js/index.js"></script>
+
+  <script src="js/index.js"></script>
 
 </body>
+
 </html>
